@@ -2,12 +2,9 @@ Source: buildingmgmt
 Section: net
 Priority: optional
 Maintainer: Craig Koroscil <ckoroscil@circadence.com>
-Build-Depends: debhelper (>= 9),
-               default-jre-headless (>= 1:1.8) | java8-runtime-headless,
-               lsb-release,
-               dh-systemd
+Build-Depends: debhelper (>= 9)
+
 Package: buildingmgmt
-Version: 1.0-2
 Architecture: all
 Depends: default-jre-headless (>= 1:1.8) | java8-runtime-headless
 Description: log4j Vulnerable Service

