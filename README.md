@@ -49,14 +49,24 @@ M75-LOG4J-VULNERABILITY
     git clone https://github.com/sintax1/M75-log4j-vuln.git
     ```
 
-2. Build and run the docker containers.
-
-    > Note: This requires [docker](#installing-docker-and-docker-compose) on the attacker VM
+2. Update the configuration (.env)
 
     ```
-    sudo apt update && sudo apt install docker
+    #.env
+
+    VICTIM_TO_ATTACKER_HTTP_PORT=8081
+    VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME=20.231.205.2
+    ATTACKER_HTTP_SERVER_PORT=8081
+    ATTACKER_HTTP_DIR=./http-dir
+    ```
+
+2. Build and run the docker containers.
+
+    > Note: This requires [docker and docker compose](#installing-docker-and-docker-compose) on the attacker VM
+
+    ```
     cd M75-log4j-vuln/attacker
-    docker compose up --build
+    docker compose up
     ```
 
 3. Launch the exploit.
