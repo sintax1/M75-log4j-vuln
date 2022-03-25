@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: ./marshalsec/Dockerfile
+    environment:
+        VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME: ${VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME}
+        VICTIM_TO_ATTACKER_HTTP_PORT: ${VICTIM_TO_ATTACKER_HTTP_PORT}
     ports:
       - "1389:1389"
   # update and compile the java payload

