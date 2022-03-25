@@ -22,8 +22,8 @@ M75-LOG4J-VULNERABILITY
 ├── images                          # README media
 └── victim                          # Victim related files
     ├── Makefile                    # Helper script to build the debian package
-    ├── buildingmgmt.1.0-1          # fake building management server/app source
-    ├── buildingmgmt.1.0-1.deb      # distributable debian package ready for install
+    ├── buildingmgmt.1.0-2          # fake building management server/app source
+    ├── buildingmgmt.1.0-2.deb      # distributable debian package ready for install
     └── log4shell-vulnerable-app    # log4j vulnerable app
 ```
 
@@ -36,8 +36,9 @@ M75-LOG4J-VULNERABILITY
 
 1. Download and install the vulnerable web app.
 ```bash
-wget -O /tmp/buildingmgmt.deb https://github.com/sintax1/M75-log4j-vuln/blob/master/victim/buildingmgmt.1.0-1.deb?raw=true
-sudo apt install /tmp/buildingmgmt.deb
+sudo apt-get update
+wget -O /tmp/buildingmgmt.deb https://github.com/sintax1/M75-log4j-vuln/blob/master/victim/buildingmgmt.1.0-2.deb?raw=true
+sudo apt install -y /tmp/buildingmgmt.deb
 ```
 
 ## Attacker
@@ -83,9 +84,9 @@ Daemon will be stopped at the end of the build
 
 BUILD SUCCESSFUL in 4s
 4 actionable tasks: 4 up-to-date
-cp log4shell-vulnerable-app/build/libs/*.jar buildingmgmt.1.0-1/opt/buildingmgmt/building-management.jar
-dpkg-deb --build buildingmgmt.1.0-1
-dpkg-deb: building package 'buildingmgmt' in 'buildingmgmt.1.0-1.deb'.
+cp log4shell-vulnerable-app/build/libs/*.jar buildingmgmt.1.0-2/opt/buildingmgmt/building-management.jar
+dpkg-deb --build buildingmgmt.1.0-2
+dpkg-deb: building package 'buildingmgmt' in 'buildingmgmt.1.0-2.deb'.
 ```
 
 ### Transfer to the victim and install

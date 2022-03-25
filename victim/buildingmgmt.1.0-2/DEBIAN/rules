@@ -4,11 +4,3 @@ PKGDIR=debian/tmp
 
 %:
 	dh $@ --with systemd
-
-override_dh_installinit:
-	dh_systemd_enable -pbuildingmgmt --name=buildingmgmt buildingmgmt.service
-	dh_installinit -pbuildingmgmt --no-start --noscripts
-	dh_systemd_start -pbuildingmgmt --no-restart-on-upgrade
-
-override_dh_systemd_start:
-	echo "Not running dh_systemd_start"
