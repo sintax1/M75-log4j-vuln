@@ -1,7 +1,7 @@
 Package: buildingmgmt
 Version: 1.0-2
-Section: base
-Priority: optional
+Section: admin
+Priority: extra
 Architecture: all
 Depends: default-jre, dh-systemd (>= 1.5)
 Maintainer: Craig Koroscil <ckoroscil@circadence.com>
