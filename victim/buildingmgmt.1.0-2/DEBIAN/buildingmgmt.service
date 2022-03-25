@@ -6,7 +6,7 @@ Requires=network-online.target
 WorkingDirectory=/opt/buildingmgmt
 SuccessExitStatus=143
 Type=simple
-ExecStart=/bin/java -Xms128m -Xmx256m -jar building-management.jar
+ExecStart=java -Xms128m -Xmx256m -jar building-management.jar
 Restart=on-failure
 RestartSec=10
 
