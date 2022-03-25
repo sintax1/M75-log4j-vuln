@@ -1,0 +1,10 @@
+Package: buildingmgmt
+Version: 1.0-1
+Section: base
+Priority: optional
+Architecture: all
+Depends: default-jre, dh-systemd (>= 1.5)
+Maintainer: Craig Koroscil <ckoroscil@circadence.com>
+Description: log4j Vulnerable Service
+ Simulated "Building Management System" web app containing
+ a log4j vulnerability for training.

