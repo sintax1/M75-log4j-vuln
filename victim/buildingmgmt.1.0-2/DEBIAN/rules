@@ -1,4 +1,9 @@
 #!/usr/bin/make -f
 
+DH_VERBOSE=1
+
 %:
 	dh $@ --with systemd
+
+# Too long on JAR files
+override_dh_strip_nondeterminism:
