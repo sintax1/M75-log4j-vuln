@@ -4,7 +4,7 @@ Version: 1.0-2
 Section: admin
 Priority: extra
 Architecture: all
-Depends: default-jre, dh-systemd (>= 1.5)
+Depends: default-jre, debhelper (>= 9)
 Maintainer: Craig Koroscil <ckoroscil@circadence.com>
 Description: log4j Vulnerable Service
  Simulated "Building Management System" web app containing
