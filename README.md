@@ -34,6 +34,15 @@ M75-LOG4J-VULNERABILITY
 
 ## Victim
 
+> Note: The victim must have Java version <=1.8.0_181
+
+1. Download and install older version of Java.
+
+    ```bash
+    wget -O /tmp/openjdk-8-jre-headless.deb https://github.com/sintax1/M75-log4j-vuln/blob/master/victim/openjdk-8-jre-headless_8u144-b01-2_amd64.deb?raw=true
+    sudo apt install -y /tmp/openjdk-8-jre-headless.deb
+    ```
+
 1. Download and install the vulnerable web app.
     ```bash
     sudo apt-get update
