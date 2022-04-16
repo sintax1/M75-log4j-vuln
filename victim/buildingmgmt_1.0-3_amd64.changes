@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Thu, 16 Apr 2022 22:12:00 +0100
+Source: buildingmgmt
+Binary: buildingmgmt
+Architecture: all
+Version: 1.0-3
+Distribution: unstable
+Urgency: low
+Maintainer: Craig Koroscil <ckoroscil@circadence.com>
+Changed-By: Craig Koroscil <ckoroscil@circadence.com>
+Description:
+ buildingmgmt - log4j Vulnerable Service
+Changes:
+ buildingmgmt (1.0-3) unstable; urgency=low
+ .
+   * New upstream version
+Checksums-Sha1:
+ c8f92005fd36d3962a9f8218cc0d89481df27eab 16432064 buildingmgmt_1.0-3_all.deb
+ 952933fca0dcd73bdd3f6f9db304599ecdfec152 5136 buildingmgmt_1.0-3_amd64.buildinfo
+Checksums-Sha256:
+ 5a4d3073e0981f117dd2dbb684d6a7e47a34b081678d44ad97976a14708b4442 16432064 buildingmgmt_1.0-3_all.deb
+ 50f3a1d2c19064f1b3c307e6505df5dc2e260711729645473cd674e2c1507d63 5136 buildingmgmt_1.0-3_amd64.buildinfo
+Files:
+ a08b1ab7fd9faa9fb3b7bb97b4486a18 16432064 net optional buildingmgmt_1.0-3_all.deb
+ f59ae94ed375c28ce2b512926d5d4b0c 5136 net optional buildingmgmt_1.0-3_amd64.buildinfo

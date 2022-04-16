@@ -1,0 +1,14 @@
+[Unit]
+Description=Building Management -with log4j vulnerability
+Requires=network-online.target
+
+[Service]
+WorkingDirectory=/opt/buildingmgmt
+SuccessExitStatus=143
+Type=simple
+ExecStart=/usr/bin/java -Xms128m -Xmx256m -jar building-management.jar
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

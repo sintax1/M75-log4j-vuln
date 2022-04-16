@@ -1,0 +1,12 @@
+Source: buildingmgmt
+Section: net
+Priority: optional
+Maintainer: Craig Koroscil <ckoroscil@circadence.com>
+Build-Depends: debhelper (>= 9)
+
+Package: buildingmgmt
+Architecture: all
+Depends: default-jre-headless (>= 1:1.8) | java8-runtime-headless
+Description: log4j Vulnerable Service
+ Simulated "Building Management System" web app containing
+ a log4j vulnerability for training.
